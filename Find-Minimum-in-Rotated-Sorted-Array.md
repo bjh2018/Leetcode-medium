@@ -13,4 +13,21 @@ You may assume no duplicate exists in the array.<br>
 2.思路
 ---
 
-我觉得与其
+我觉得与其找到转折点，去找最小值，不如简单粗暴地直接找最小值。
+
+3.代码
+----
+
+```c
+int findMin(int* nums, int numsSize) {
+    int min=2147483647;
+    for (int i=0; i<numsSize; i++) {
+        if (nums[i]<min) {
+            min=nums[i];
+        }
+    }
+    return min;
+}
+```
+
+
