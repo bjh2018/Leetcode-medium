@@ -83,8 +83,45 @@ int* asteroidCollision(int* asteroids, int asteroidsSize, int* returnSize) {
     *returnSize=sum;
     return asteroids;
 }
+```
 
 4.代码II
 ---
 
 ```c
+int* asteroidCollision(int* asteroids, int asteroidsSize, int* returnSize) {
+    *returnSize = 0;
+    if (!asteroids || !asteroidsSize)//asteroids中没有元素
+        return NULL;
+
+    int ai = 0;//当前元素的前一位
+    int* a = asteroids;
+    for (int i = 1; i < asteroidsSize; i ++)
+    {
+        if (a[i] > 0 ||  ai < 0 ||a[ai] < 0)//ai<0是当数组中只有两个数，并且相加为1的情况
+           a[++ ai] = a[i];
+        else
+        {
+            int x;
+            int j = ai;
+            for (; j >= 0; j --)
+            {
+                x = a[j] + a[i];
+                if (x >= 0 || a[j] < 0)//a[j]<0是说最右边也是负数的情况
+                {
+                    if (!x)//当x=0时，执行j--
+                        j --;
+                    break;
+                }
+            }
+            ai = j;
+            if (x < 0)
+                a[++ ai] = a[i];
+        }
+    }
+    *returnSize = ai + 1;
+    return asteroids;
+}
+```
+
+根据题意可知，最后的情况肯定是右边全是正数，左边全是负数，就从第二个元素开始遍历，如果第二个元素大于0，就说明它可能是右边的元素，如果第二个元素小于0，那么它肯定不是右边的数，就再把它与前面的数比较，如果他与前面的数的和大于等于0，则说面馆它要被撞毁，就把a1置成j，下次再出现相同的情况再从a1开始，如果前面的元素小于0，则说明它不是右边的。
